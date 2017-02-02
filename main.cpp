@@ -7,39 +7,42 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct positive_coordinat
-{
-    void checkInvariant()
-    {
-#ifndef NDEBUG
-        if (x < 0.0 || y < 0.0)
-            throw std::logic_error("a iyerciyged 3eyfewfu ide i3edhu ue oo");
-#endif
-    }
-
-private:
-
-    double x;
-    double y;
-};
-
 class splashBlock
 {
+    /*
     const float splashBlockHeight;
     const float splashBlockWidth;
     float splashBlock_x;
     float splashBlock_y;
+    */
     sf::RectangleShape block;
-public:
 
+public:
     splashBlock(const float height, const float width, const float posX, const float posY)
-        :splashBlockHeight(height),  splashBlockWidth(width), splashBlock_x(posX), splashBlock_y(posY)
+       // :splashBlockHeight(height),  splashBlockWidth(width), splashBlock_x(posX), splashBlock_y(posY)
+        :block()
     {
-        block.setSize(sf::Vector2f(splashBlockHeight, splashBlockWidth));
-        block.setPosition(sf::Vector2f(splashBlock_x, splashBlock_y));
+        block.setSize(sf::Vector2f(height, width));
+        block.setPosition(sf::Vector2f(posX, posY));
         block.setFillColor(sf::Color(255, 127, 63));
     }
 
+    float getHeight()
+    {
+        return block.getSize().x;
+    }
+    float getWidth()
+    {
+        return block.getSize().y;
+    }
+    float getPosX()
+    {
+        return block.getPosition().x;
+    }
+    float getPosY()
+    {
+        return block.getPosition().y;
+    }
     void displash(sf::RenderWindow &window)
     {
         window.draw(block);
@@ -49,7 +52,8 @@ public:
 
 int main()
 {
-    splashBlock splashy(10,10,100,100);
+    //splashBlock splashy(10,10,100,100);
+    std::vector<splashBlock> splashBlocks;
     int posX=300;
     int windowSizeX=700;
     int windowSizeY = 900;
@@ -73,6 +77,12 @@ int main()
        sf::VideoMode(windowSizeX, windowSizeY),
        "mt",
        sf::Style::Titlebar | sf::Style::Close);
+
+    splashBlocks.push_back(splashBlock(100,100,50,50));
+    splashBlocks.push_back(splashBlock(100,100,300,500));
+    splashBlocks.push_back(splashBlock(50,50,300,810));
+    std::cout<<splashBlocks[0].getHeight();
+
     //Dit, de push backs, komen allemaal in de main of in een functie in iedergeval moet het een for loop hebben,
     //hierdoor kunnen er meerdere bloken zijn.
     for(int i=0; i< 5; ++i)
@@ -334,7 +344,9 @@ int main()
     window.draw(player);
     for(const auto block: blocks)
     window.draw(block);
-    splashy.displash(window);
+    for(int i=0; i<3; ++i)
+    splashBlocks[i].displash(window);
+    //splashy.displash(window);
     window.display();
     }
     return 0;
