@@ -226,6 +226,7 @@ int main()
     int playerSizeY=40;
     float jumpingForce = 0;
     bool isGrounded =true;
+    float slidingSpeed =3;
     std::vector<sf::RectangleShape> blocks;
     int posY = windowSizeY-playerSizeY;
     sf::RenderWindow window(
@@ -292,7 +293,7 @@ int main()
                 std::cout<<posY<<"\n";
                // if(i==0)
 
-                    posY+=2;
+                //posY+=2;
 
             }
         }
@@ -324,12 +325,24 @@ int main()
         {
             isGrounded=false;
             posX=standingBlocks[i].getPosX()+standingBlocks[i].getWidth();
-            posY+=2;
+           // posY+=2;
             jumpingForce=0;
-            if(posX ==standingBlocks[i].getWidth()+standingBlocks[i].getPosY())
-            {
-            posY+=1.5;
+                if(posX ==standingBlocks[i].getWidth()+standingBlocks[i].getPosX())
+                {
+                    posY+=slidingSpeed;
+                }
+
             }
+
+        if(posY==standingBlocks[i].getPosY()-playerSizeY &&
+          posX + playerSizeX > standingBlocks[i].getPosX()  &&
+          posX < standingBlocks[i].getPosX()+standingBlocks[i].getWidth())
+        {
+           slidingSpeed=0;
+        }
+        else
+        {
+            slidingSpeed=3;
         }
 
         //Colliding Right side player
@@ -342,11 +355,11 @@ int main()
         {
             isGrounded=false;
             posX=standingBlocks[i].getPosX()-playerSizeX;
-            posY+=2;
+            //posY+=2;
             jumpingForce=0;
             if(posX ==standingBlocks[i].getPosX()-playerSizeX)
             {
-            posY+=1;
+            posY+=slidingSpeed;
             }
 
         }
