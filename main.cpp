@@ -44,6 +44,11 @@ public:
         block.setPosition(sf::Vector2f(posX, posY));
     }
 
+    void setPositionBlock(float posX, float posY)
+    {
+        block.setPosition(sf::Vector2f(posX, posY));
+    }
+
 };
 
 std::vector<standingBlock> create_standing_blocks() noexcept
@@ -227,6 +232,7 @@ int main()
     float jumpingForce = 0;
     bool isGrounded =true;
     float slidingSpeed =3;
+    float blockSpeedMovingDown =1;
     std::vector<sf::RectangleShape> blocks;
     int posY = windowSizeY-playerSizeY;
     sf::RenderWindow window(
@@ -251,10 +257,15 @@ int main()
                 break;
             }
         }
-    for(int i=0; i<4; ++i)
+    for(int i=0; i<static_cast<int>(standingBlocks.size()); ++i)
     {
-    standingBlocks[i].moveDown(standingBlocks[i].getPosX(),standingBlocks[i].getPosY(),2);
+        standingBlocks[i].moveDown(standingBlocks[i].getPosX(),standingBlocks[i].getPosY(),blockSpeedMovingDown);
+        if(900<standingBlocks[i].getPosY())
+        {
+            standingBlocks[i].setPositionBlock(100, 0);
+        }
     }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {
         window.close();
@@ -293,7 +304,7 @@ int main()
                 std::cout<<posY<<"\n";
                // if(i==0)
 
-                //posY+=2;
+                posY+=blockSpeedMovingDown;
 
             }
         }
